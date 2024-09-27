@@ -1,0 +1,17 @@
+[package]
+name = "cofrist"
+version = "1.0.0"
+authors = []
+
+[addresses]
+user = "0x387dbba8446f119057a1648f91a87564cfffc46c0b04d9a0007d603cf61d98bb"
+
+[dev-addresses]
+
+[dependencies.AptosFramework]
+#git = "https://github.com/aptos-labs/aptos-core.git"
+#rev = "mainnet"
+#subdir = "aptos-move/framework/aptos-framework"
+local = "../aptos-core/aptos-move/framework/aptos-framework"
+
+[dev-dependencies]
