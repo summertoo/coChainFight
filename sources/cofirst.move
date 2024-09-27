@@ -7,14 +7,9 @@ module user::test_mo{
     use aptos_framework::randomness;
     use aptos_framework::event::{Self};
 
-
-    #[test_only]
-    use std::string::utf8;
-    #[test_only]
-    use aptos_std::debug;
-
     struct Player has key,store{
         name: string::String,
+        sender:address,
         guess: u8,
         score: u64,
     }
@@ -53,12 +48,12 @@ module user::test_mo{
         vector::push_back(&mut player_list.players, player);
     }
 
-    public fun create_player(name: string::String, score: u64): Player {
-        Player { name, guess:0,score }
+    public fun create_player(sender: &signer,name: string::String, score: u64): Player {
+        Player { name,sender:signer::address_of(sender), guess:0,score }
     }
 
-    public fun join_player(player_list: &mut PlayerList, name: string::String, score: u64) {
-        let player = Player { name,guess:0, score };
+    public fun join_player(sender: &signer,player_list: &mut PlayerList, name: string::String, score: u64) {
+        let player = Player { name,sender:signer::address_of(sender),guess:0, score };
         vector::push_back(&mut player_list.players, player);
     }
 
@@ -100,6 +95,12 @@ module user::test_mo{
 
     }
 
+    #[test_only]
+    use std::string::utf8;
+    #[test_only]
+    use aptos_std::debug;
+
+
     #[test(aptos_framework = @aptos_framework)]
     fun randNumber(aptos_framework: &signer){
         randomness::initialize_for_testing(aptos_framework);
@@ -116,26 +117,30 @@ module user::test_mo{
         };
     }
 
-    #[test(user = @0x1)]
-    public fun test(user: &signer){
+    #[test(user = @0x1,player1= @0x2,player2= @0x3)]
+    public fun test(user: &signer,player1: &signer,player2: &signer){
         debug::print(&utf8(b"test"));
 
         let player_list = create_player_list();
-        join_player(&mut player_list, string::utf8(b"Alice"),10);
-        join_player(&mut player_list, string::utf8(b"Bob"),20);
+        join_player(player1,&mut player_list, string::utf8(b"Alice"),10);
+        join_player(player2,&mut player_list, string::utf8(b"Bob"),20);
         debug::print(&player_list);
         move_to(user, player_list);
     }
 
-    #[test(creator = @0x42)]
-    fun test_create_player_list(creator: &signer) acquires PlayerList {
+    #[test(creator = @0x42,player1= @0x2,player2= @0x3)]
+    fun test_create_player_list(creator: &signer,player1: &signer,player2: &signer) acquires PlayerList {
         let player_list_address = create_player_list_share(creator);
         let player_list = borrow_global_mut<PlayerList>(player_list_address);
 
-        let player = Player { name:string::utf8(b"Bob"),guess:10, score:0 };
+        let player = Player { name:string::utf8(b"Bob"),
+            sender:signer::address_of(player1),
+            guess:10, score:0 };
         vector::push_back(&mut player_list.players, player);
 
-        let player2 = Player { name:string::utf8(b"alice"),guess:20, score:0 };
+        let player2 = Player { name:string::utf8(b"alice"),
+            sender:signer::address_of(player2),
+            guess:20, score:0 };
         vector::push_back(&mut player_list.players, player2);
 
         let players_count = vector::length(&player_list.players);
