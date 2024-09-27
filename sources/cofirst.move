@@ -64,11 +64,6 @@ module user::test_mo{
 
     fun init_module(sender: &signer) {
 
-
-    }
-
-    public fun hello(){
-
     }
 
     fun guess():u8{
