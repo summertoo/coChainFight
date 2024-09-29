@@ -6,6 +6,7 @@ module user::test_mo{
     use std::signer;
     use aptos_framework::randomness;
     use aptos_framework::event::{Self};
+    use user::room;
 
     struct Player has key,store{
         name: string::String,
@@ -147,5 +148,6 @@ module user::test_mo{
         debug::print(&string::utf8(b"Player count: "));
         debug::print(&players_count);
 
+        room::create_room(creator,string::utf8(b"troom"));
     }
 }
