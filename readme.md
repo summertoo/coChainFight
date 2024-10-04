@@ -25,3 +25,22 @@
 
 ![list](./imgs/list1.jpg)
 
+
+合约发布
+Do you want to submit a transaction for a range of [159600 - 239400] Octas at a gas unit price of 100 Octas? [yes/no] >
+yes
+Transaction submitted: https://explorer.aptoslabs.com/txn/0xb03acdb4c27f02a4273a40fcd7345906c3baec57dc966ad3cc0e3c3285cd1bed?network=testnet
+{
+"Result": {
+"transaction_hash": "0xb03acdb4c27f02a4273a40fcd7345906c3baec57dc966ad3cc0e3c3285cd1bed",
+"gas_used": 1596,
+"gas_unit_price": 100,
+"sender": "387dbba8446f119057a1648f91a87564cfffc46c0b04d9a0007d603cf61d98bb",
+"sequence_number": 1,
+"success": true,
+"timestamp_us": 1728027466381911,
+"version": 6083805128,
+"vm_status": "Executed successfully"
+}
+}
+

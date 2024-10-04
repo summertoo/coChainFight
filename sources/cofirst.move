@@ -24,6 +24,10 @@ module user::test_mo{
         playerlist: address
     }
 
+    #[event]
+    struct PlayerListAddressEvent has drop, store {
+        playerlist: address
+    }
     public fun create_player_list(): PlayerList {
         PlayerList { players: vector::empty() }
     }
@@ -45,6 +49,10 @@ module user::test_mo{
         objaddress
     }
 
+    public fun hello(){
+
+    }
+
     public fun add_player(player_list: &mut PlayerList, player: Player) {
         vector::push_back(&mut player_list.players, player);
     }
@@ -60,6 +68,11 @@ module user::test_mo{
 
     fun init_module(sender: &signer) {
 
+        let address = create_player_list_share(sender);
+        let event = PlayerListAddressEvent{
+            playerlist : address
+        };
+        event::emit(event);
     }
 
     fun guess():u8{
